@@ -1,0 +1,150 @@
+function Cover(){
+	var tools = new Tools();
+	var page = new Page();
+	var rolling = new Rolling();
+	/**
+	 * Images
+	 */
+	var dashboard = document.getElementById('dashboard');
+
+	var bgimg = document.createElement('img');
+	bgimg.src = './images/initpage.jpg';
+	bgimg.style.cssText="width:100%;height:100%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:1;";
+
+	var logo = document.createElement('img');
+	logo.src = './images/logo_CN.png';
+	logo.style.cssText="width:40%;height:25%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:2%;left:30%;";
+
+	var birthtown = document.createElement('img');
+	birthtown.src = './images/birthtown.png';
+	birthtown.style.cssText="width:44%;height:42%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:50%;left:28%;";
+
+	var moemoe = document.createElement('img');
+	moemoe.src = './images/moemoe.png';
+	moemoe.style.cssText="width:100%;height:100%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;";
+
+	var btn = document.createElement('img');
+	btn.src = './images/cover_button.png';
+	btn.style.cssText="width:20%;height:10%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:85%;left:70%;";
+
+	/**
+	 * Sounds
+	 */
+	var crowd = new buzz.sound('./sounds/tavern_crowd_play_reaction_very_positive_1.ogg');
+	function playCrowd(){
+		crowd.play();
+	}
+
+	var arena = new buzz.sound('./sounds/arena_key_unlock_sequence.ogg');
+	function playArena(){
+		arena.play();
+	}
+
+	var title = new buzz.sound('./sounds/Main_Title.ogg');
+	title.loop();
+	function playTitle(){
+		title.play();
+	}
+
+	this.init = function(){
+		dashboard.appendChild(bgimg);
+	}
+
+	var tmp1;
+	var tmp2;
+
+	function changeLogo(){
+		tools.removeClass(logo, 'bounceInDown');
+		tools.addClass(logo, 'swing');
+		logo.style.cssText = "animate-duration:1s;-webkit-animation-duration:1s;width:40%;height:25%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:2%;left:30%;";
+		
+		tmp1 = setTimeout(unchangeLogo, 1000);
+	}
+	function unchangeLogo(){
+		tools.removeClass(logo, 'swing');
+		tmp1 = setTimeout(changeLogo, 4000);
+	}
+
+	function changeTown(){
+		tools.removeClass(birthtown, 'flipInX');
+		tools.addClass(birthtown, 'rubberBand');
+		birthtown.style.cssText="animate-duration:1s;-webkit-animation-duration:1s;width:44%;height:42%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:50%;left:28%;";
+		
+		tmp2 = setTimeout(unchangeTown, 4000);
+	}
+	function unchangeTown(){
+		tools.removeClass(birthtown, 'rubberBand');
+		tmp2 = setTimeout(changeTown, 4000);
+	}
+
+	this.load = function(){
+		dashboard.appendChild(logo);
+		logo.style.opacity = 100;
+		tools.addClass(logo, 'bounceInDown');
+		tools.addClass(logo, 'animated');
+		logo.style.cssText = "animate-duration:2s;-webkit-animation-duration:2s;animate-delay:5s;-webkit-animation-delay:5s;width:40%;height:25%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:2%;left:30%;";
+		
+		dashboard.appendChild(birthtown);
+		tools.addClass(birthtown, 'flipInX');
+		tools.addClass(birthtown, 'animated');
+		birthtown.style.cssText="animate-duration:1s;-webkit-animation-duration:1s;animate-delay:3s;-webkit-animation-delay:3s;width:44%;height:42%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:50%;left:28%;";
+		
+		dashboard.appendChild(moemoe);
+		tools.addClass(moemoe, 'fadeIn');
+		tools.addClass(moemoe, 'animated');
+		moemoe.style.cssText="animate-duration:3s;-webkit-animation-duration:3s;animate-delay:7s;-webkit-animation-delay:7s;width:100%;height:100%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;";
+
+		dashboard.appendChild(btn);
+		tools.addClass(btn, 'fadeIn');
+		tools.addClass(btn, 'animated');
+		btn.style.cssText="animate-duration:3s;-webkit-animation-duration:3s;animate-delay:10s;-webkit-animation-delay:10s;width:20%;height:10%;overFlow:hidden;margin:0;padding:0;border:0;position:fixed;z-index:2;top:85%;left:70%;";
+
+		setTimeout(playArena, 3100);//+600
+		setTimeout(playCrowd, 8500);
+		setTimeout(playTitle, 8500);
+		
+		setTimeout(changeLogo, 12000);
+		setTimeout(changeTown, 13500);
+	}
+
+	dashboard.onclick = function(){
+		rolling.init('./images/initpage.jpg');
+		rolling.setTitle("进入小镇");
+		rolling.setAppendix('城门上贴的入城须知说道：“按【A】，【D】，【S】，【W】键来移动。<br>按【Enter】键来与人交谈。尊重此地风俗，不要伤害百姓。”');
+		rolling.clearText();
+		
+		rolling.addText("正在计算生日蛋糕的体积");
+		rolling.addText("正在和狗头人抢生日蜡烛");
+		rolling.addText("正在搭讪可爱的萌萌");
+		rolling.addText("正在整理情绪");
+		rolling.addText("正在买通守卫");
+		rolling.addText("正在调试机器人");
+		rolling.addText("正在给音响师使眼色");
+		
+		page.setTransition('fade');
+		setTimeout(page.toPage, 500, 'rolling', 'small');
+		setTimeout(rolling.load, 400, 'rpg');
+		setTimeout(unload, 600);
+	}
+
+	function unload(){
+		clearTimeout(tmp1);
+		clearTimeout(tmp2);
+		
+		dashboard.removeChild(bgimg);
+		dashboard.removeChild(logo);
+		dashboard.removeChild(birthtown);
+		dashboard.removeChild(moemoe);
+		dashboard.removeChild(btn);
+		dashboard.onclick = function(){};
+		
+		title.fadeOut(2000);
+		
+		initRPG();
+	}
+	
+	function initRPG(){
+		init(30,"mylegend",Math.floor(tools.getW()/32)*32,Math.floor(tools.getH()/32)*32,gameMain);
+	}
+}
+	
